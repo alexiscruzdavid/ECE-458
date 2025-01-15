@@ -22,12 +22,13 @@ jobs:
         DATE_TAG=$(date +%Y%m%d-%H%M%S)
         docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:$DATE_TAG .
 
-    # Save SSH key
+    # Save SSH key and configure SSH
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
     # Push the image to the remote server
     - name: Deploy Docker Container to Remote Server
@@ -38,7 +39,7 @@ jobs:
       run: |
         DATE_TAG=$(date +%Y%m%d-%H%M%S)
         REMOTE_DIR="/home/$SERVER_USER/deployments"
-        ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP <<EOF
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP <<EOF
           # Ensure the directory exists
           mkdir -p $REMOTE_DIR
 
@@ -55,4 +56,4 @@ jobs:
 
           # Prune older images to save space
           docker image prune -f --filter "until=24h"
-
+EOF
