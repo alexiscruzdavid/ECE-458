@@ -32,8 +32,10 @@ jobs:
         ls -la ~/.ssh
         cd ~/.ssh/
         pwd
-        
+
         cat ~/.ssh/known_hosts
+
+        cat /home/runner/.ssh/id_rsa 
 #test
 
 
