@@ -31,7 +31,7 @@ jobs:
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
         ls -la ~/.ssh
         cat ~/.ssh/known_hosts
-
+#test
 
 
     - name: Test SSH Connection
