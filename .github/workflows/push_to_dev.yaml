@@ -30,6 +30,11 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
+
+    - name: Test SSH Connection
+      run: |
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} echo "SSH Connection Successful"
+          
     # Push the image to the remote server
     - name: Deploy Docker Container to Remote Server
       env:
