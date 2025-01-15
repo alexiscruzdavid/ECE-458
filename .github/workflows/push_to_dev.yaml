@@ -30,6 +30,9 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
         ls -la ~/.ssh
+        cd ~/.ssh/
+        pwd
+        
         cat ~/.ssh/known_hosts
 #test
 
